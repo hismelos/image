@@ -25,7 +25,7 @@
 <script type="text/javascript">
 
 var Points = [];
-
+var Pathcollect = [];
 //jatos.onLoad(function() {
 window.onload = function() {
   paper.install(window)
@@ -40,9 +40,16 @@ window.onload = function() {
     clearCanvas: function() {
       topLayer.removeChildren()
     },
- 
+    undo:function(){
+      var path1 = Pathcollect.pop()
+      var i;
+      for (i = 0; i < 3; i++) {
+       var path = path1.pop()
+       path.remove()
+      }
+    },
     End:function(){
-      jatos.endStudy(topLayer.children, "everything worked fine");
+      jatos.endStudy(Pathcollect, "everything worked fine");
     }
   }
 //add next component
@@ -62,6 +69,7 @@ window.onload = function() {
   })
   
   gui.add(options, 'clearCanvas')
+  gui.add(options,'undo')
   gui.add(options, 'End')
 
   // this layer holds the background pattern
@@ -202,10 +210,17 @@ arrowTool.onMouseDown = e => {
 }
 
 arrowTool.onMouseDrag = e => {
-  arrow.update(e.point)
+ //arrow.update(e.point)
   //document.write(e.point)
 }
 
+arrowTool.onMouseUp = function(event) {
+  arrow.update(event.point)
+  Pathcollect.push(arrow.update(event.point).children)
+  //console.log(Pathcollect)
+   // arrow.children.selected = true
+    //console.log(topLayer.children[0].segments.point)
+  }
 
   // tool that 'erases' within the active layer only. first it simulates erasing
   // using a stroked path and blend modes while you draw. onMouseUp it converts
