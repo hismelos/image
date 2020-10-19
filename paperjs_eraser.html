@@ -31,9 +31,10 @@ window.onload = function() {
   // set up some options and the dat.gui panel
   var options = {
     drawWidth: 1,
-    eraseWidth: 50,
     drawColor: '#000000',
-    toolSelect: 'draw',
+    Arrow:function(){
+      arrowTool.activate()
+    },
     clearCanvas: function() {
       topLayer.removeChildren()
     },
@@ -59,17 +60,7 @@ window.onload = function() {
   var gui = new dat.GUI()
   gui.addColor(options, 'drawColor')
   gui.add(options, 'drawWidth', 0.1, 50)
-  gui.add(options, 'eraseWidth', 1, 100)
-  gui.add(options, 'toolSelect', ['draw', 'erase','arrow']).onChange(function(value) {
-    if (value === 'erase') {
-      eraseTool.activate()
-    } else if (value === 'draw') {
-      drawTool.activate()
-    }
-    else{
-      arrowTool.activate()
-    }
-  })
+  gui.add(options, 'Arrow')
   gui.add(options, 'clearCanvas')
   gui.add(options,'undo')
   gui.add(options,'Next')
